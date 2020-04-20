@@ -1,5 +1,3 @@
-
-
 #include "FunctionsUsed.h"
 
 //                  Variant - 2 
