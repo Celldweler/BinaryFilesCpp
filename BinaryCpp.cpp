@@ -1,17 +1,15 @@
 #include <sys/types.h>      /* включение необходимых заголовочных файлов */ 
 #include <fcntl.h> 
-#include <stdlib.h> 
-#include<stdio.h>
 #include <sys\stat.h>
 #include <io.h>
 #include <iostream>
 #include <string>
 #include <ctime>
 #include <Windows.h>
+#pragma warning(disable : 4996)
 
 using namespace std;
-#pragma warning(disable : 4996)
-#define BUF_SIZE 4096               
+
 void Base();
 void Midle();
 void Hard();
@@ -19,26 +17,23 @@ void Hard();
 int main(int argc, char* argv[])
 {
     srand(time(0));
-   // SetConsoleCP(1251);
-   // SetConsoleOutputCP(1251);
-    setlocale(LC_ALL, "");
-
-    SetConsoleOutputCP(1251);
+    setlocale(0, "");
+     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
-
-    Base();
+      Base();
     // Midle();
      //Hard();
 }
 struct Item
 {
     string       name_of_product;
-    unsigned int count_items;
-    unsigned int unit_price;
+     int count_items;
+     int unit_price;
 };
 void Base()
 {
     cout << "\nBase task level\n";
+        
     /*
     Создать бинарный файл, компонентами которого является структура, содержащая следующие поля:
      - Наименование товара;
@@ -46,18 +41,18 @@ void Base()
      - Количество каждого товара.
     Определить общую стоимость товара, предложенного для реализации, и его среднюю цену
     */
-    string mas_name_of_product[] = { "Ноутбуки", "БП", "Кулеры", "Процэсоры", 
-                    "Материнские платы", "RAM", "HDD","SSD" };
+    string mas_name_of_product[] = { "Laptops", "BP", "Kylers", "Procesors", 
+                    "Matherboard", "RAM", "HDD","SSD" };
     int count_item = 8;//mas_name_of_product.length();
     Item* item = new Item[count_item];
 
     char path[] = "itembase";
-    cout << "\nДанные о товаре хранящиеся в файле <<itembase.bin>>: \n";
+    cout << "\nDate loat to file <<itembase.bin>>: \n";
     for (size_t i = 0; i < count_item; i++)
     {
-        cout<<"\t" << (item[i].name_of_product = mas_name_of_product[i]) <<" "<<
-       ( item[i].count_items = 10 + rand() % 100 )<< " " <<
-        ( item[i].unit_price = (2000 + rand() % 10000) * item[i].count_items) <<"\n";
+        cout << "\t" << (item[i].name_of_product = mas_name_of_product[i]) << "\t";
+        cout << (item[i].count_items = 10 + rand() % 100) << "\t";
+        cout<<( item[i].unit_price = ( (2000 + rand() % 1000) * item[i].count_items) ) <<endl;
     }
     FILE* f_out, * f_in;
     f_out = fopen(path, "wb");
@@ -85,8 +80,8 @@ void Base()
     fwrite(&unit_cost, sizeof(int), 1, f_out);
     fwrite(&average_price, sizeof(float), 1, f_out);
     fclose(f_out);
-    cout << "\nOбщая стоимость товара, предложенного для реализации, и его "<< unit_cost<<
-        " \n средняя цена: \n" << average_price;
+    cout << "\nUnit cost all items "<< unit_cost<<
+        "\naverage price: " << average_price;
 }
 
 void Midle()
@@ -129,8 +124,11 @@ void Midle()
     {
         cout << buffer[i] << " ";
     }
-
 }
+
+
+
+
 
 
 struct Student
