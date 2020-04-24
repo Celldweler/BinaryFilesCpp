@@ -8,10 +8,8 @@
 #include <string>
 #include <ctime>
 #include <windows.h>
-
 using namespace std;
 #pragma warning(disable : 4996)
-#define BUF_SIZE 4096               
 void Base();
 void Midle();
 void Hard();
@@ -24,10 +22,16 @@ int main(int argc, char* argv[])
     setlocale(LC_ALL, "");
 
     Base();
-    // Midle();
-     //Hard();
+     Midle();
+     Hard();
 }
 
+struct Item
+{
+    string       name_of_product;
+    unsigned int count_items;
+    unsigned int unit_price;
+};
 void Base()
 {
     cout << "\nBase task level\n";
@@ -38,7 +42,47 @@ void Base()
      - Количество каждого товара.
     Определить общую стоимость товара, предложенного для реализации, и его среднюю цену
     */
+    string mas_name_of_product[] = { "Ноутбуки", "БП", "Кулеры", "Процэсоры", 
+                    "Материнские платы", "RAM", "HDD","SSD" };
+    int count_item = 8;//mas_name_of_product.length();
+    Item* item = new Item[count_item];
 
+    char path[] = "itembase";
+    cout << "\nДанные о товаре хранящиеся в файле <<itembase.bin>>: \n";
+    for (size_t i = 0; i < count_item; i++)
+    {
+        cout<<"\t" << (item[i].name_of_product = mas_name_of_product[i]) <<" "<<
+       ( item[i].count_items = 10 + rand() % 100 )<< " " <<
+        ( item[i].unit_price = (2000 + rand() % 10000) * item[i].count_items) <<"\n";
+    }
+    FILE* f_out, * f_in;
+    f_out = fopen(path, "wb");
+    fwrite(item, sizeof(Item), count_item, f_out);
+    fclose(f_out);
+    
+    delete[] item;
+    item = nullptr;
+    Item* buffer = new Item[count_item];
+    
+    int   unit_cost = 0,  //Oбщая стоимость товара
+          unit_count_item = 0;
+    float average_price = 0.0;// средняя цена
+
+    f_in = fopen(path, "rb");
+    fread(buffer, sizeof(Item), count_item, f_in);
+    fclose(f_in);
+    for (size_t i = 0; i < count_item; i++)
+    {
+        unit_cost += buffer[i].unit_price;
+        unit_count_item += buffer[i].count_items;
+    }
+    f_out = fopen("newworkfile", "wb");
+    average_price = (float)unit_cost / (float)unit_count_item;
+    fwrite(&unit_cost, sizeof(int), 1, f_out);
+    fwrite(&average_price, sizeof(float), 1, f_out);
+    fclose(f_out);
+    cout << "\nOбщая стоимость товара, предложенного для реализации, и его "<< unit_cost<<
+        " \n средняя цена: \n" << average_price;
 }
 
 void Midle()
